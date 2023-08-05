@@ -1,8 +1,7 @@
-package com.github.mjklukowski.dplayer.controller;
+package com.github.mjklukowski.dplayer.discord;
 
-import com.github.mjklukowski.dplayer.dto.Channel;
-import com.github.mjklukowski.dplayer.dto.Guild;
-import com.github.mjklukowski.dplayer.services.DiscordService;
+import com.github.mjklukowski.dplayer.discord.dto.Channel;
+import com.github.mjklukowski.dplayer.discord.dto.Guild;
 import discord4j.common.util.Snowflake;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class GuildController {
+public class DiscordController {
 
     private final DiscordService discordService;
 
-    public GuildController(DiscordService discordService) {
+    public DiscordController(DiscordService discordService) {
         this.discordService = discordService;
     }
 

@@ -1,4 +1,4 @@
-package com.github.mjklukowski.dplayer.services;
+package com.github.mjklukowski.dplayer.discord;
 
 import discord4j.common.util.Snowflake;
 import discord4j.core.GatewayDiscordClient;
@@ -7,6 +7,7 @@ import discord4j.core.object.entity.channel.VoiceChannel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DiscordService {
@@ -19,6 +20,10 @@ public class DiscordService {
 
     public List<Guild> getGuilds() {
         return client.getGuilds().collectList().block();
+    }
+
+    public Optional<Guild> getGuildById(Snowflake guildId) {
+        return Optional.ofNullable(client.getGuildById(guildId).block());
     }
 
     public List<VoiceChannel> getChannels(Snowflake guildId) {
