@@ -22,11 +22,18 @@ public class QueueController {
         this.discordService = discordService;
     }
 
-    @PostMapping("/guild/{guildId}/queue/add")
+    @PostMapping("/guild/{guildId}/queue")
     public ResponseEntity<Void> addToQueue(@PathVariable String guildId, @RequestBody Track track) {
         Guild guild = discordService.getGuildById(Snowflake.of(guildId)).orElseThrow();
         this.queueService.addTrack(guild, track);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @DeleteMapping("/guild/{guildId}/queue/{trackIndex}")
+    public ResponseEntity<Void> removeFromQueue(@PathVariable String guildId, @PathVariable int trackIndex) {
+        Guild guild = discordService.getGuildById(Snowflake.of(guildId)).orElseThrow();
+        this.queueService.removeTrack(guild, trackIndex);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/guild/{guildId}/queue")

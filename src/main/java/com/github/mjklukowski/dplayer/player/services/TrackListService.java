@@ -6,4 +6,5 @@ import discord4j.core.object.entity.Guild;
 public interface TrackListService {
 
     void addTrack(Guild guild, Track track);
+    void removeTrack(Guild guild, int trackIndex);
 }

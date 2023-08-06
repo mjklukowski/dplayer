@@ -18,6 +18,11 @@ public class QueueService implements TrackListService {
         getQueue(guild).add(track);
     }
 
+    @Override
+    public void removeTrack(Guild guild, int trackIndex) {
+        getQueue(guild).remove(trackIndex);
+    }
+
     public PlaybackQueue getQueue(Guild guild) {
         if(!queues.containsKey(guild))
             queues.put(guild, new PlaybackQueue());
