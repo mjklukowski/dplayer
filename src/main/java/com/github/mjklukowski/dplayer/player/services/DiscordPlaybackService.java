@@ -1,7 +1,10 @@
 package com.github.mjklukowski.dplayer.player.services;
 
 import com.github.mjklukowski.dplayer.discord.DiscordService;
+import com.github.mjklukowski.dplayer.player.domain.queue.PlaybackQueue;
 import com.github.mjklukowski.dplayer.player.domain.Track;
+import com.github.mjklukowski.dplayer.player.domain.queue.QueueLinear;
+import com.github.mjklukowski.dplayer.player.domain.queue.QueueShuffle;
 import discord4j.core.object.entity.Guild;
 import discord4j.core.object.entity.channel.VoiceChannel;
 import discord4j.core.spec.VoiceChannelJoinSpec;
@@ -69,5 +72,14 @@ public class DiscordPlaybackService implements PlaybackService {
         channel.getVoiceConnection()
                 .flatMap(VoiceConnection::disconnect)
                 .block();
+    }
+
+    @Override
+    public void shuffle(VoiceChannel channel, boolean enabled) {
+        PlaybackQueue queue = queueService.getQueue(channel.getGuild().block());
+        if(enabled)
+            queue.setQueueStrategy(new QueueShuffle());
+        else
+            queue.setQueueStrategy(new QueueLinear(queue.getCurrentTrackIndex()));
     }
 }

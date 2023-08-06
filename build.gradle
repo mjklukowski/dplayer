@@ -21,6 +21,7 @@ dependencies {
 	implementation "com.discord4j:discord4j-core:3.2.5"
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation "org.mockito:mockito-core:3.+"
 }
 
 tasks.named('test') {

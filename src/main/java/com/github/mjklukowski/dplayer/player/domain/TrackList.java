@@ -24,7 +24,7 @@ public abstract class TrackList {
     }
 
     public List<Track> getTrackList() {
-        return trackList.stream().toList();
+        return List.copyOf(trackList);
     }
 
 }

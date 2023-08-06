@@ -9,4 +9,5 @@ public interface PlaybackService {
     void next(VoiceChannel channel);
     void prev(VoiceChannel channel);
     void stop(VoiceChannel channel);
+    void shuffle(VoiceChannel channel, boolean enabled);
 }

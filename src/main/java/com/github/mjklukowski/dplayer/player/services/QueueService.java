@@ -1,7 +1,8 @@
 package com.github.mjklukowski.dplayer.player.services;
 
-import com.github.mjklukowski.dplayer.player.domain.PlaybackQueue;
+import com.github.mjklukowski.dplayer.player.domain.queue.PlaybackQueue;
 import com.github.mjklukowski.dplayer.player.domain.Track;
+import com.github.mjklukowski.dplayer.player.domain.queue.QueueLinear;
 import discord4j.core.object.entity.Guild;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class QueueService implements TrackListService {
 
     public PlaybackQueue getQueue(Guild guild) {
         if(!queues.containsKey(guild))
-            queues.put(guild, new PlaybackQueue());
+            queues.put(guild, new PlaybackQueue(new QueueLinear()));
         return queues.get(guild);
     }
 }

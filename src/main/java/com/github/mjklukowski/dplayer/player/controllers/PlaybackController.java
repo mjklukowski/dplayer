@@ -36,6 +36,8 @@ public class PlaybackController {
             case STOP -> playbackService.stop(channel);
             case NEXT -> playbackService.next(channel);
             case PREV -> playbackService.prev(channel);
+            case SHUFFLE_ON -> playbackService.shuffle(channel, true);
+            case SHUFFLE_OFF -> playbackService.shuffle(channel, false);
         }
     }
 

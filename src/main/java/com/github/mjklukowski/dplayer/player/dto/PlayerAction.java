@@ -6,6 +6,8 @@ public record PlayerAction(Action action, Integer trackId) {
         PAUSE,
         STOP,
         NEXT,
-        PREV
+        PREV,
+        SHUFFLE_ON,
+        SHUFFLE_OFF
     }
 }

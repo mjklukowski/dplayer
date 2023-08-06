@@ -41,4 +41,14 @@ public class Track {
     public void setDuration(long duration) {
         this.duration = duration;
     }
+
+    @Override
+    public String toString() {
+        return "Track{" +
+                "url=" + url +
+                ", artist='" + artist + '\'' +
+                ", title='" + title + '\'' +
+                ", duration=" + duration +
+                '}';
+    }
 }
