@@ -1,10 +1,13 @@
 package com.github.mjklukowski.dplayer.player.services;
 
+import com.github.mjklukowski.dplayer.audio.TrackScheduler;
 import com.github.mjklukowski.dplayer.discord.DiscordService;
-import com.github.mjklukowski.dplayer.player.domain.queue.PlaybackQueue;
 import com.github.mjklukowski.dplayer.player.domain.Track;
+import com.github.mjklukowski.dplayer.player.domain.queue.PlaybackQueue;
 import com.github.mjklukowski.dplayer.player.domain.queue.QueueLinear;
 import com.github.mjklukowski.dplayer.player.domain.queue.QueueShuffle;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import discord4j.core.object.entity.Guild;
 import discord4j.core.object.entity.channel.VoiceChannel;
 import discord4j.core.spec.VoiceChannelJoinSpec;
@@ -12,23 +15,42 @@ import discord4j.voice.AudioProvider;
 import discord4j.voice.VoiceConnection;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class DiscordPlaybackService implements PlaybackService {
 
-    private final QueueService queueService;
+    private final Map<Guild, TrackScheduler> schedulers = new HashMap<>();
     private final DiscordService discordService;
+    private final QueueService queueService;
+    private final AudioPlayerManager playerManager;
+    private final AudioPlayer player;
+    private final AudioProvider provider;
 
-    public DiscordPlaybackService(QueueService queueService, DiscordService discordService) {
-        this.queueService = queueService;
+
+    public DiscordPlaybackService(DiscordService discordService, QueueService queueService, AudioPlayerManager playerManager, AudioPlayer player, AudioProvider provider) {
         this.discordService = discordService;
+        this.queueService = queueService;
+        this.playerManager = playerManager;
+        this.player = player;
+        this.provider = provider;
     }
 
     private void join(VoiceChannel channel) {
         if(channel.getVoiceConnection().block() != null)
             return;
-        channel.join(VoiceChannelJoinSpec.builder().provider(AudioProvider.NO_OP).build()).block();
+        channel.join(VoiceChannelJoinSpec.builder().provider(provider).build()).block();
+    }
+
+    private TrackScheduler getScheduler(VoiceChannel channel) {
+        Guild guild = channel.getGuild().block();
+        if(!schedulers.containsKey(guild))
+            schedulers.put(guild, new TrackScheduler(channel, discordService, this, playerManager, player));
+        TrackScheduler scheduler = schedulers.get(guild);
+        scheduler.setChannel(channel);
+        return scheduler;
     }
 
     @Override
@@ -47,7 +69,7 @@ public class DiscordPlaybackService implements PlaybackService {
 
     private void play(VoiceChannel channel, Track track) {
         join(channel);
-        discordService.sendMessage(channel.getGuild().block(), "Now playing" + track.getUrl());
+        getScheduler(channel).play(track);
     }
 
     @Override
@@ -69,6 +91,7 @@ public class DiscordPlaybackService implements PlaybackService {
 
     @Override
     public void stop(VoiceChannel channel) {
+        player.stopTrack();
         channel.getVoiceConnection()
                 .flatMap(VoiceConnection::disconnect)
                 .block();
@@ -82,4 +105,5 @@ public class DiscordPlaybackService implements PlaybackService {
         else
             queue.setQueueStrategy(new QueueLinear(queue.getCurrentTrackIndex()));
     }
+
 }
