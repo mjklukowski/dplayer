@@ -3,6 +3,7 @@ package com.github.mjklukowski.dplayer.discord;
 import discord4j.common.util.Snowflake;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.object.entity.Guild;
+import discord4j.core.object.entity.channel.TextChannel;
 import discord4j.core.object.entity.channel.VoiceChannel;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,23 @@ public class DiscordService {
                 .filter(channel -> channel instanceof VoiceChannel)
                 .map(channel -> (VoiceChannel) channel)
                 .collectList().block();
+    }
+
+    public Optional<VoiceChannel> getChannelById(Snowflake channelId) {
+        return Optional.ofNullable(client.getChannelById(channelId)
+                .filter(channel -> channel instanceof VoiceChannel)
+                .map(channel -> (VoiceChannel) channel)
+                .block());
+    }
+
+    private Optional<TextChannel> getBotChannel(Guild guild) {
+        return Optional.ofNullable((TextChannel) guild.getChannels()
+                .filter(ch -> ch.getName().equals("dplayer"))
+                .blockFirst());
+    }
+
+    public void sendMessage(Guild guild, String message) {
+        getBotChannel(guild).ifPresent(channel -> channel.createMessage(message).block());
     }
 
 }

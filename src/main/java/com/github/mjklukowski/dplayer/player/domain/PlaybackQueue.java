@@ -37,6 +37,10 @@ public class PlaybackQueue extends TrackList {
         return Optional.empty();
     }
 
+    public Optional<Track> current() {
+        return get(currentTrack);
+    }
+
     @Override
     public void remove(int trackIndex) {
         super.remove(trackIndex);
