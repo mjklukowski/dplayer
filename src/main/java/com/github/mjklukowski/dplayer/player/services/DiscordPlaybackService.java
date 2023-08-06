@@ -23,6 +23,8 @@ public class DiscordPlaybackService implements PlaybackService {
     }
 
     private void join(VoiceChannel channel) {
+        if(channel.getVoiceConnection().block() != null)
+            return;
         channel.join(VoiceChannelJoinSpec.builder().provider(AudioProvider.NO_OP).build()).block();
     }
 
@@ -52,12 +54,14 @@ public class DiscordPlaybackService implements PlaybackService {
 
     @Override
     public void next(VoiceChannel channel) {
-
+        Optional<Track> next = queueService.getQueue(channel.getGuild().block()).next();
+        next.ifPresent(track -> play(channel, track));
     }
 
     @Override
     public void prev(VoiceChannel channel) {
-
+        Optional<Track> prev = queueService.getQueue(channel.getGuild().block()).prev();
+        prev.ifPresent(track -> play(channel, track));
     }
 
     @Override
