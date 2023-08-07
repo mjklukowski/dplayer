@@ -8,6 +8,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import com.sedmelluq.discord.lavaplayer.track.playback.NonAllocatingAudioFrameBuffer;
@@ -53,6 +54,7 @@ public class AudioManager extends AudioEventAdapter {
                     player.playTrack(audioTrack);
                     discordService.sendMessage(channel.getGuild().block(), "Now playing" + track.getUrl());
                 })
+                .onError(message -> playbackService.next(channel))
                 .build();
 
         loader.loadTrack(track);
@@ -68,6 +70,11 @@ public class AudioManager extends AudioEventAdapter {
 
     public void stopTrack() {
         player.stopTrack();
+    }
+
+    @Override
+    public void onTrackException(AudioPlayer player, AudioTrack track, FriendlyException exception) {
+        playbackService.next(channel);
     }
 
     @Override
