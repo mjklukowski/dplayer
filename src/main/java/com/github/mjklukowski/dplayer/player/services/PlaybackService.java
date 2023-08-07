@@ -6,6 +6,7 @@ public interface PlaybackService {
     void play(VoiceChannel channel);
     void play(VoiceChannel channel, int trackIndex);
     void pause(VoiceChannel channel);
+    void resume(VoiceChannel channel);
     void next(VoiceChannel channel);
     void prev(VoiceChannel channel);
     void stop(VoiceChannel channel);

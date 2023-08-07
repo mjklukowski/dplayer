@@ -4,6 +4,7 @@ public record PlayerAction(Action action, Integer trackId) {
     public enum Action {
         PLAY,
         PAUSE,
+        RESUME,
         STOP,
         NEXT,
         PREV,

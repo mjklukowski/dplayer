@@ -33,6 +33,7 @@ public class PlaybackController {
                     playbackService.play(channel, action.trackId());
             }
             case PAUSE -> playbackService.pause(channel);
+            case RESUME -> playbackService.resume(channel);
             case STOP -> playbackService.stop(channel);
             case NEXT -> playbackService.next(channel);
             case PREV -> playbackService.prev(channel);
