@@ -19,11 +19,11 @@ class QueueLinearTest {
     void setUp() throws MalformedURLException {
         queue = new QueueLinear();
         tracks = List.of(
-                new Track(new URL("https://google.com")),
-                new Track(new URL("https://example.com")),
-                new Track(new URL("https://github.com")),
-                new Track(new URL("https://wikipedia.org")),
-                new Track(new URL("https://youtube.com"))
+                new Track(new URL("https://google.com"), "https://google.com", ""),
+                new Track(new URL("https://example.com"), "https://example.com", ""),
+                new Track(new URL("https://github.com"), "https://github.com", ""),
+                new Track(new URL("https://wikipedia.org"), "https://wikipedia.org", ""),
+                new Track(new URL("https://youtube.com"), "https://youtube.com", "")
         );
     }
 
@@ -36,17 +36,17 @@ class QueueLinearTest {
 
     @Test
     void shouldReturnEachTrack() {
-        Assertions.assertEquals("https://google.com", queue.getCurrent(tracks).getUrl().toString());
-        Assertions.assertEquals("https://example.com", queue.next(tracks).getUrl().toString());
-        Assertions.assertEquals("https://github.com", queue.next(tracks).getUrl().toString());
-        Assertions.assertEquals("https://wikipedia.org", queue.next(tracks).getUrl().toString());
-        Assertions.assertEquals("https://youtube.com", queue.next(tracks).getUrl().toString());
+        Assertions.assertEquals("https://google.com", queue.getCurrent(tracks).url().toString());
+        Assertions.assertEquals("https://example.com", queue.next(tracks).url().toString());
+        Assertions.assertEquals("https://github.com", queue.next(tracks).url().toString());
+        Assertions.assertEquals("https://wikipedia.org", queue.next(tracks).url().toString());
+        Assertions.assertEquals("https://youtube.com", queue.next(tracks).url().toString());
     }
 
     @Test
     void shouldReturnNextThenPrevTrack() {
-        Assertions.assertEquals("https://example.com", queue.next(tracks).getUrl().toString());
-        Assertions.assertEquals("https://google.com", queue.prev(tracks).getUrl().toString());
+        Assertions.assertEquals("https://example.com", queue.next(tracks).url().toString());
+        Assertions.assertEquals("https://google.com", queue.prev(tracks).url().toString());
     }
 
     @Test
@@ -61,7 +61,7 @@ class QueueLinearTest {
 
     @Test
     void shouldReturnFirstTrackWhenAtTheBeginning() {
-        Assertions.assertEquals("https://google.com", queue.prev(tracks).getUrl().toString());
+        Assertions.assertEquals("https://google.com", queue.prev(tracks).url().toString());
     }
 
     @Test

@@ -52,7 +52,7 @@ public class AudioManager extends AudioEventAdapter {
                     player.stopTrack();
                     player.setPaused(false);
                     player.playTrack(audioTrack);
-                    discordService.sendMessage(channel.getGuild().block(), "Now playing" + track.getUrl());
+                    discordService.sendMessage(channel.getGuild().block(), "Now playing" + track.url());
                 })
                 .onError(message -> playbackService.next(channel))
                 .build();

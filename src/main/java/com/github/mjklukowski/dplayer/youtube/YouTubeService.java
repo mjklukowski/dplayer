@@ -1,6 +1,7 @@
 package com.github.mjklukowski.dplayer.youtube;
 
 import com.github.mjklukowski.dplayer.youtube.dto.YouTubeSearchResultSnippet;
+import com.github.mjklukowski.dplayer.youtube.dto.playlist.YouTubePlaylistItem;
 import com.github.mjklukowski.dplayer.youtube.dto.playlist.YouTubePlaylistResponse;
 import com.github.mjklukowski.dplayer.youtube.dto.search.YouTubeSearchListResponse;
 import com.github.mjklukowski.dplayer.youtube.dto.search.YouTubeSearchResult;
@@ -77,11 +78,13 @@ public class YouTubeService {
         return Mono.just(youTubeVideo);
     }
 
-    public Flux<YouTubeVideo> getPlaylistVideos(String playlistId) {
+    public Flux<YouTubePlaylistItem> getPlaylistVideoItems(String playlistId, String nextPageToken) {
         return client.get().uri(uriBuilder -> uriBuilder
                         .path("/playlistItems")
                         .queryParam("part", "snippet")
                         .queryParam("playlistId", playlistId)
+                        .queryParam("pageToken", nextPageToken)
+                        .queryParam("maxResults", 50)
                         .queryParam("key", API_KEY)
                         .build()
                 )
@@ -92,7 +95,15 @@ public class YouTubeService {
 
                     return response.bodyToMono(YouTubePlaylistResponse.class);
                 })
-                .flatMapIterable(YouTubePlaylistResponse::items)
+                .flatMapMany(response -> {
+                    if(response.nextPageToken() != null)
+                        return Flux.concat(Flux.fromIterable(response.items()), getPlaylistVideoItems(playlistId, response.nextPageToken()));
+                    return Flux.fromIterable(response.items());
+                });
+    }
+
+    public Flux<YouTubeVideo> getPlaylistVideos(String playlistId) {
+        return getPlaylistVideoItems(playlistId, null)
                 .map(item -> {
                     YouTubeVideo video = new YouTubeVideo();
                     video.setData(new YouTubeSearchResultSnippet(

@@ -1,54 +1,36 @@
 package com.github.mjklukowski.dplayer.player.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.net.URL;
 
-public class Track {
+public final class Track {
     private final URL url;
-    private String artist;
-    private String title;
-    private long duration;
+    private final String title;
+    private final String thumbnail;
 
-    public Track(@JsonProperty("url") URL url) {
+    public Track(URL url, String title, String thumbnail) {
         this.url = url;
-    }
-
-    public URL getUrl() {
-        return url;
-    }
-
-    public String getArtist() {
-        return artist;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
         this.title = title;
-    }
-
-    public long getDuration() {
-        return duration;
-    }
-
-    public void setDuration(long duration) {
-        this.duration = duration;
+        this.thumbnail = thumbnail;
     }
 
     @Override
     public String toString() {
         return "Track{" +
                 "url=" + url +
-                ", artist='" + artist + '\'' +
                 ", title='" + title + '\'' +
-                ", duration=" + duration +
                 '}';
     }
+
+    public URL url() {
+        return url;
+    }
+
+    public String title() {
+        return title;
+    }
+
+    public String thumbnail() {
+        return thumbnail;
+    }
+
 }

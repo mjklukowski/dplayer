@@ -20,7 +20,7 @@ public class AudioLoader implements AudioLoadResultHandler {
     }
 
     public void loadTrack(Track track) {
-        manager.loadItem(track.getUrl().toString(), this);
+        manager.loadItem(track.url().toString(), this);
     }
 
     @Override

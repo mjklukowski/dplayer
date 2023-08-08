@@ -31,11 +31,11 @@ class QueueShuffleTest {
                 .thenReturn(3, 1, 0, 1, 0);
 
         tracks = List.of(
-                new Track(new URL("https://google.com")),
-                new Track(new URL("https://example.com")),
-                new Track(new URL("https://github.com")),
-                new Track(new URL("https://wikipedia.org")),
-                new Track(new URL("https://youtube.com"))
+                new Track(new URL("https://google.com"), "https://google.com", ""),
+                new Track(new URL("https://example.com"), "https://example.com", ""),
+                new Track(new URL("https://github.com"), "https://github.com", ""),
+                new Track(new URL("https://wikipedia.org"), "https://wikipedia.org", ""),
+                new Track(new URL("https://youtube.com"), "https://youtube.com", "")
         );
     }
 
@@ -48,11 +48,11 @@ class QueueShuffleTest {
 
     @Test
     void shouldReturnEachTrack() {
-        Assertions.assertEquals("https://wikipedia.org", queue.next(tracks).getUrl().toString());
-        Assertions.assertEquals("https://example.com", queue.next(tracks).getUrl().toString());
-        Assertions.assertEquals("https://google.com", queue.next(tracks).getUrl().toString());
-        Assertions.assertEquals("https://youtube.com", queue.next(tracks).getUrl().toString());
-        Assertions.assertEquals("https://github.com", queue.next(tracks).getUrl().toString());
+        Assertions.assertEquals("https://wikipedia.org", queue.next(tracks).url().toString());
+        Assertions.assertEquals("https://example.com", queue.next(tracks).url().toString());
+        Assertions.assertEquals("https://google.com", queue.next(tracks).url().toString());
+        Assertions.assertEquals("https://youtube.com", queue.next(tracks).url().toString());
+        Assertions.assertEquals("https://github.com", queue.next(tracks).url().toString());
     }
 
     @Test
@@ -90,23 +90,23 @@ class QueueShuffleTest {
                     .thenReturn(3, 1, 0, 1, 0, 2, 1, 1, 0);
 
             dupeTracks = new ArrayList<>(tracks);
-            dupeTracks.add(new Track(new URL("https://example.com")));
-            dupeTracks.add(new Track(new URL("https://wikipedia.org")));
-            dupeTracks.add(new Track(new URL("https://wikipedia.org")));
-            dupeTracks.add(new Track(new URL("https://google.com")));
+            dupeTracks.add(new Track(new URL("https://example.com"), "https://example.com", ""));
+            dupeTracks.add(new Track(new URL("https://wikipedia.org"), "https://wikipedia.org", ""));
+            dupeTracks.add(new Track(new URL("https://wikipedia.org"), "https://wikipedia.org", ""));
+            dupeTracks.add(new Track(new URL("https://google.com"), "https://google.com", ""));
         }
 
         @Test
         void shouldReturnEachTrack() {
-            Assertions.assertEquals("https://wikipedia.org", queue.next(dupeTracks).getUrl().toString());
-            Assertions.assertEquals("https://example.com", queue.next(dupeTracks).getUrl().toString());
-            Assertions.assertEquals("https://google.com", queue.next(dupeTracks).getUrl().toString());
-            Assertions.assertEquals("https://youtube.com", queue.next(dupeTracks).getUrl().toString());
-            Assertions.assertEquals("https://github.com", queue.next(dupeTracks).getUrl().toString());
-            Assertions.assertEquals("https://wikipedia.org", queue.next(dupeTracks).getUrl().toString());
-            Assertions.assertEquals("https://wikipedia.org", queue.next(dupeTracks).getUrl().toString());
-            Assertions.assertEquals("https://google.com", queue.next(dupeTracks).getUrl().toString());
-            Assertions.assertEquals("https://example.com", queue.next(dupeTracks).getUrl().toString());
+            Assertions.assertEquals("https://wikipedia.org", queue.next(dupeTracks).url().toString());
+            Assertions.assertEquals("https://example.com", queue.next(dupeTracks).url().toString());
+            Assertions.assertEquals("https://google.com", queue.next(dupeTracks).url().toString());
+            Assertions.assertEquals("https://youtube.com", queue.next(dupeTracks).url().toString());
+            Assertions.assertEquals("https://github.com", queue.next(dupeTracks).url().toString());
+            Assertions.assertEquals("https://wikipedia.org", queue.next(dupeTracks).url().toString());
+            Assertions.assertEquals("https://wikipedia.org", queue.next(dupeTracks).url().toString());
+            Assertions.assertEquals("https://google.com", queue.next(dupeTracks).url().toString());
+            Assertions.assertEquals("https://example.com", queue.next(dupeTracks).url().toString());
         }
 
         @Test
