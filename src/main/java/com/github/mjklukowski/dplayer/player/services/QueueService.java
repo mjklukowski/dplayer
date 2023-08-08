@@ -10,16 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class QueueService implements TrackListService {
+public class QueueService {
 
     private final Map<Guild, PlaybackQueue> queues = new HashMap<>();
 
-    @Override
     public void addTrack(Guild guild, Track track) {
         getQueue(guild).add(track);
     }
 
-    @Override
     public void removeTrack(Guild guild, int trackIndex) {
         getQueue(guild).remove(trackIndex);
     }
