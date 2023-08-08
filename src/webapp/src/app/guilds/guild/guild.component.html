@@ -28,7 +28,11 @@
   </div>
 </div>
 <ng-container *ngIf="!collapsed">
-  <div class="channel" *ngFor="let channel of channels$ | async">
+  <div
+    class="channel"
+    *ngFor="let channel of channels$ | async"
+    [routerLink]="[guild.snowflake, 'queue']"
+  >
     {{ channel.name }}
   </div>
 </ng-container>

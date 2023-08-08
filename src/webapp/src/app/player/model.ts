@@ -3,3 +3,9 @@ export enum PlayerStatus {
     STOPPED = "STOPPED",
     PAUSED = "PAUSED"
 }
+
+export interface Track {
+    url: string,
+    title: string,
+    thumbnail: string
+}
