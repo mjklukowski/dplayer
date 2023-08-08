@@ -1,0 +1,10 @@
+<ng-container *ngIf="playlists$ | async as playlists">
+  <app-playlist-list
+    [playlists]="playlists"
+    [activePlaylist]="activePlaylist"
+    (onChange)="selectPlaylist($event)"
+  ></app-playlist-list>
+  <app-playlist-tracks
+    [tracks]="activePlaylist?.trackList"
+  ></app-playlist-tracks>
+</ng-container>

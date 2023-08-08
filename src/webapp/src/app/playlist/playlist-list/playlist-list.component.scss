@@ -1,0 +1,21 @@
+@import "/src/colors.scss";
+
+:host {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid $separatorColor;
+    border-radius: 4px;
+    height: 100%;
+}
+
+.playlist {
+    padding: 0.5rem;
+    margin: 0.25rem 0;
+    cursor: pointer;
+
+    &.active {
+        border-radius: 4px;
+        background-color: lighten($separatorColor, 10%);
+    }
+}
+

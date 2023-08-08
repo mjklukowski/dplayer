@@ -1,0 +1,8 @@
+<div
+  *ngFor="let playlist of playlists"
+  class="playlist"
+  [ngClass]="playlist == activePlaylist ? 'active' : ''"
+  (click)="selectPlaylist(playlist)"
+>
+  {{ playlist.name }}
+</div>

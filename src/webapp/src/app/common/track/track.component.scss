@@ -7,7 +7,7 @@
     align-items: center;
 
     &:not(:last-child) {
-        border-bottom: 1px solid lighten(#333333, 10%);
+        border-bottom: 1px solid $separatorColor;
     }
 }
 
@@ -27,13 +27,13 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: lighten(#333333, 10%);
+    background-color: $separatorColor;
     border: none;
     border-radius: 4px;
     margin: 1rem;
     cursor: pointer;
 
     &:hover {
-        background-color: lighten(#333333, 25%);
+        background-color: lighten($separatorColor, 15%);
     }
 }

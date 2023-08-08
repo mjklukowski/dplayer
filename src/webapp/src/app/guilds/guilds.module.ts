@@ -2,18 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GuildPanelComponent } from './guild-panel/guild-panel.component';
 import { GuildComponent } from './guild/guild.component';
-import { RouterModule } from '@angular/router';
+import { GuildRoutingModule } from './guild-routing.module';
+import { GuildContainerComponent } from './guild-container/guild-container.component';
 
 
 
 @NgModule({
   declarations: [
     GuildPanelComponent,
-    GuildComponent
+    GuildComponent,
+    GuildContainerComponent
   ],
   imports: [
     CommonModule,
-    RouterModule
+    GuildRoutingModule
   ],
   exports: [
     GuildPanelComponent

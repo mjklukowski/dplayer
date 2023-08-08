@@ -1,0 +1,6 @@
+<ng-container *ngIf="tracks?.length ?? 0 > 0; else emptyPlaylist">
+  <app-track *ngFor="let track of tracks" [track]="track"></app-track>
+</ng-container>
+<ng-template #emptyPlaylist>
+  <div *ngIf="tracks" class="empty">Playlist is empty</div>
+</ng-template>

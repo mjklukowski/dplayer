@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { QueueComponent } from './queue/queue.component';
+import { PlaylistComponent } from './playlist/playlist.component';
 
 const routes: Routes = [
   {
-    path: "queue",
-    component: QueueComponent,
+    path: "playlists",
+    component: PlaylistComponent,
   }
+
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class QueueRoutingModule { }
+export class PlaylistRoutingModule { }
