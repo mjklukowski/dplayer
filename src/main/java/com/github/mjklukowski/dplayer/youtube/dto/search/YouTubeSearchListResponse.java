@@ -1,4 +1,4 @@
-package com.github.mjklukowski.dplayer.youtube.dto;
+package com.github.mjklukowski.dplayer.youtube.dto.search;
 
 import java.util.List;
 

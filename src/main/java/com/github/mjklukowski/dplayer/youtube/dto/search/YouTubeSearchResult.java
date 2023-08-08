@@ -1,7 +1,8 @@
-package com.github.mjklukowski.dplayer.youtube.dto;
+package com.github.mjklukowski.dplayer.youtube.dto.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.github.mjklukowski.dplayer.youtube.dto.YouTubeSearchResultSnippet;
 
 import java.util.Map;
 
@@ -37,5 +38,13 @@ public class YouTubeSearchResult {
             case "youtube#playlist" -> properties.get("playlistId");
             default -> throw new IllegalStateException("Unexpected value: " + kind);
         };
+    }
+
+    public boolean isVideo() {
+        return kind.equals("youtube#video");
+    }
+
+    public boolean isPlaylist() {
+        return kind.equals("youtube#playlist");
     }
 }

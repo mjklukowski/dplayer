@@ -1,11 +1,16 @@
 package com.github.mjklukowski.dplayer.youtube;
 
-import com.github.mjklukowski.dplayer.youtube.dto.YouTubeSearchListResponse;
-import com.github.mjklukowski.dplayer.youtube.dto.YouTubeSearchResult;
+import com.github.mjklukowski.dplayer.youtube.dto.YouTubeSearchResultSnippet;
+import com.github.mjklukowski.dplayer.youtube.dto.playlist.YouTubePlaylistResponse;
+import com.github.mjklukowski.dplayer.youtube.dto.search.YouTubeSearchListResponse;
+import com.github.mjklukowski.dplayer.youtube.dto.search.YouTubeSearchResult;
+import com.github.mjklukowski.dplayer.youtube.dto.video.YouTubeVideo;
+import com.github.mjklukowski.dplayer.youtube.dto.video.YouTubeVideoListResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URLEncoder;
@@ -41,6 +46,64 @@ public class YouTubeService {
                     return response.bodyToMono(YouTubeSearchListResponse.class);
                 })
                 .map(YouTubeSearchListResponse::items);
+    }
+
+    public Flux<YouTubeVideo> getVideo(String videoId) {
+        return client.get().uri(uriBuilder -> uriBuilder
+                        .path("/videos")
+                        .queryParam("part", "snippet,contentDetails,statistics")
+                        .queryParam("id", videoId)
+                        .queryParam("key", API_KEY)
+                        .build()
+                )
+                .accept(MediaType.APPLICATION_JSON)
+                .exchangeToMono(response -> {
+                    if(response.statusCode().isError())
+                        return Mono.empty();
+
+                    return response.bodyToMono(YouTubeVideoListResponse.class);
+                })
+                .flatMapIterable(YouTubeVideoListResponse::items)
+                .take(1);
+    }
+
+    public Mono<YouTubeVideo> getVideo(YouTubeSearchResult searchResult) {
+        if(!searchResult.isVideo())
+            return Mono.empty();
+
+        YouTubeVideo youTubeVideo = new YouTubeVideo();
+        youTubeVideo.setData(searchResult.getData());
+
+        return Mono.just(youTubeVideo);
+    }
+
+    public Flux<YouTubeVideo> getPlaylistVideos(String playlistId) {
+        return client.get().uri(uriBuilder -> uriBuilder
+                        .path("/playlistItems")
+                        .queryParam("part", "snippet")
+                        .queryParam("playlistId", playlistId)
+                        .queryParam("key", API_KEY)
+                        .build()
+                )
+                .accept(MediaType.APPLICATION_JSON)
+                .exchangeToMono(response -> {
+                    if(response.statusCode().isError())
+                        return Mono.empty();
+
+                    return response.bodyToMono(YouTubePlaylistResponse.class);
+                })
+                .flatMapIterable(YouTubePlaylistResponse::items)
+                .map(item -> {
+                    YouTubeVideo video = new YouTubeVideo();
+                    video.setData(new YouTubeSearchResultSnippet(
+                            item.getData().title(),
+                            item.getData().description(),
+                            item.getData().thumbnails(),
+                            item.getData().channelTitle()
+                    ));
+                    video.setId(item.getData().resourceId().get("videoId"));
+                    return video;
+                });
     }
 
 }
