@@ -26,6 +26,13 @@ public class DiscordController {
                 .toList();
     }
 
+    @GetMapping("/guild/{guildId}")
+    public Guild getGuild(@PathVariable String guildId) {
+        return discordService.getGuildById(Snowflake.of(guildId))
+                .map(guild -> new Guild(guild.getId().asString(), guild.getName()))
+                .orElseThrow();
+    }
+
     @GetMapping("/guild/{guildId}/channels")
     public List<Channel> getChannels(@PathVariable String guildId) {
         return discordService.getChannels(Snowflake.of(guildId))
