@@ -4,7 +4,7 @@ import { PlaylistComponent } from './playlist/playlist.component';
 import { PlaylistRoutingModule } from './playlist-routing.module';
 import { PlaylistListComponent } from './playlist-list/playlist-list.component';
 import { PlaylistTracksComponent } from './playlist-tracks/playlist-tracks.component';
-import { TrackComponent } from '../common/track/track.component';
+import { CommonsModule } from '../commons/commons.module';
 
 
 
@@ -12,12 +12,12 @@ import { TrackComponent } from '../common/track/track.component';
   declarations: [
     PlaylistComponent,
     PlaylistListComponent,
-    PlaylistTracksComponent,
-    TrackComponent
+    PlaylistTracksComponent
   ],
   imports: [
     CommonModule,
-    PlaylistRoutingModule
+    PlaylistRoutingModule,
+    CommonsModule
   ]
 })
 export class PlaylistModule { }

@@ -2,18 +2,18 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { QueueComponent } from './queue/queue.component';
 import { QueueRoutingModule } from './queue-routing.module';
-import { TrackComponent } from '../common/track/track.component';
+import { CommonsModule } from '../commons/commons.module';
 
 
 
 @NgModule({
   declarations: [
-    QueueComponent,
-    TrackComponent
+    QueueComponent
   ],
   imports: [
     CommonModule,
-    QueueRoutingModule
+    QueueRoutingModule,
+    CommonsModule
   ]
 })
 export class QueueModule { }
