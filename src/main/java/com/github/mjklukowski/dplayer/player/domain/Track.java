@@ -1,5 +1,7 @@
 package com.github.mjklukowski.dplayer.player.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.net.URL;
 
 public final class Track {
@@ -21,14 +23,17 @@ public final class Track {
                 '}';
     }
 
+    @JsonProperty
     public URL url() {
         return url;
     }
 
+    @JsonProperty
     public String title() {
         return title;
     }
 
+    @JsonProperty
     public String thumbnail() {
         return thumbnail;
     }

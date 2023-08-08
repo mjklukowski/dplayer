@@ -27,7 +27,7 @@ public class QueueController {
     }
 
     @PostMapping("/guild/{guildId}/queue")
-    public ResponseEntity<Void> addToQueue(@PathVariable String guildId, @RequestBody PlayerItem item) {
+    public ResponseEntity<List<Track>> addToQueue(@PathVariable String guildId, @RequestBody PlayerItem item) {
         Guild guild = discordService.getGuildById(Snowflake.of(guildId)).orElseThrow();
         List<Track> tracks = linkResolverService.resolve(item.url());
 
@@ -35,7 +35,7 @@ public class QueueController {
             return ResponseEntity.badRequest().build();
 
         tracks.forEach(track -> this.queueService.addTrack(guild, track));
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(tracks);
     }
 
     @DeleteMapping("/guild/{guildId}/queue/{trackIndex}")
