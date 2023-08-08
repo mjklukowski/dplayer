@@ -1,0 +1,41 @@
+@import "/src/colors.scss";
+
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #222222;
+    padding: 1rem 0;
+}
+
+button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0.25rem;
+
+    border-radius: 100%;
+    width: 2rem;
+    height: 2rem;
+
+    background-color: transparent;
+    border: 2px solid $text-color;
+
+    &.play, &.pause {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    svg > path {
+        fill: $text-color;
+
+        &:hover {
+            fill: $text-color-hover;
+        }
+    }
+
+
+    &:hover {
+        border-color: $text-color-hover;
+    }
+}
