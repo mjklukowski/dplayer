@@ -1,0 +1,50 @@
+@import "/src/colors.scss";
+
+:host {
+    display: block;
+    padding: 0.5rem;
+
+    &.active {
+        background-color: lighten($guildPanelBackgroundColor, 10%);
+        border-radius: 4px;
+    }
+}
+
+.guild {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+
+    svg > path {
+        fill: $textColor;
+    }
+
+    .name {
+        flex: 1;
+    }
+
+    .caret {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 1rem;
+    }
+}
+
+.channel {
+    margin: 0.75rem 0;
+    padding-left: 1rem;
+    cursor: pointer;
+}
+
+.guild, .channel {
+    &:hover {
+        color: $textColorHover;
+
+        .caret svg > path {
+            fill: $textColorHover;
+        }
+    }
+}

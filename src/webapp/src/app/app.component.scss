@@ -5,5 +5,14 @@ main {
 }
 
 #main-container {
+    display: flex;
     flex: 1;
+}
+
+app-guild-panel {
+    flex: 2;
+}
+
+#outlet {
+    flex: 10;
 }

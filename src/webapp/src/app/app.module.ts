@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PlayerModule } from './player/player.module';
+import { GuildsModule } from './guilds/guilds.module';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { PlayerModule } from './player/player.module';
     BrowserModule,
     AppRoutingModule,
     PlayerModule,
+    GuildsModule,
     HttpClientModule
   ],
   providers: [],
