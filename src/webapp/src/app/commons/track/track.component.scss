@@ -21,6 +21,12 @@ img {
     user-select: none;
 }
 
+.buttons {
+    display: flex;
+    margin: 1rem;
+    gap: 1rem;
+}
+
 button {
     width: 2rem;
     height: 2rem;
@@ -30,7 +36,6 @@ button {
     background-color: $separatorColor;
     border: none;
     border-radius: 4px;
-    margin: 1rem;
     cursor: pointer;
 
     &:hover {

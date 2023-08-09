@@ -13,6 +13,7 @@ import { GuildService } from 'src/app/guilds/guild.service';
 export class QueueComponent implements OnInit {
 
   tracks$?: Observable<Track[]>
+  guildId?: string
 
   constructor(
     private route: ActivatedRoute,
@@ -23,12 +24,16 @@ export class QueueComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap
       .pipe(
-        map(params => params.get("guildId")!),
-        switchMap(guildId => this.guildService.getGuild(guildId)),
+        map(params => params.get("guildId")!)
       )
-      .subscribe(guild => {
-        this.tracks$ = this.queueService.getTracks(guild);
+      .subscribe(guildId => {
+        this.guildId = guildId;
+        this.tracks$ = this.queueService.getTracks(guildId);
       })
+  }
+
+  removeTrack(track: Track) {
+    this.queueService.removeTrack(this.guildId, track);
   }
 
 }

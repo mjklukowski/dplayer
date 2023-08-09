@@ -1,3 +1,7 @@
 <div class="tracks">
-  <app-track *ngFor="let track of tracks$ | async" [track]="track"></app-track>
+  <app-track
+    *ngFor="let track of tracks$ | async"
+    [track]="track"
+    (onRemove)="removeTrack($event)"
+  ></app-track>
 </div>
