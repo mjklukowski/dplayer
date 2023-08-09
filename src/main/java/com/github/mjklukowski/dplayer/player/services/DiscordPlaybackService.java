@@ -139,6 +139,7 @@ public class DiscordPlaybackService implements PlaybackService {
         PlaybackQueue queue = queueService.getQueue(discordGuild);
 
         Track currentTrack = queue.current().orElse(null);
+        int currentTrackIndex = queue.getCurrentTrackIndex();
         if(state == PlayerState.STOPPED)
             currentTrack = null;
 
@@ -147,6 +148,7 @@ public class DiscordPlaybackService implements PlaybackService {
                 state,
                 currentChannel,
                 currentTrack,
+                currentTrackIndex,
                 queue.getQueueStrategy() instanceof QueueShuffle
         );
     }

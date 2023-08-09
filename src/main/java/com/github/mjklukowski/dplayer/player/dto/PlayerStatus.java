@@ -9,6 +9,7 @@ public record PlayerStatus(
         PlayerState state,
         Channel channel,
         Track currentTrack,
+        Integer currentTrackId,
         boolean shuffle
 ) {
 }

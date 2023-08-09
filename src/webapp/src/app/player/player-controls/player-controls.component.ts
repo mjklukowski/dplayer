@@ -13,6 +13,7 @@ export class PlayerControlsComponent implements OnInit, OnDestroy {
   status: PlayerStatus | null = {
     channel: null,
     currentTrack: null,
+    currentTrackId: 0,
     guild: null,
     shuffle: false,
     state: PlayerState.STOPPED

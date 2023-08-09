@@ -5,6 +5,7 @@ export interface PlayerStatus {
     state: PlayerState
     channel: Channel | null
     currentTrack: Track | null
+    currentTrackId: number
     shuffle: boolean
 }
 

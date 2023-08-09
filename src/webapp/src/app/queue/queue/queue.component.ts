@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { QueueService } from '../queue.service';
-import { Observable, map, switchMap, take } from 'rxjs';
-import { Track } from 'src/app/player/model';
+import { Observable, Subscription, map, of, switchMap, take } from 'rxjs';
+import { PlayerState, Track } from 'src/app/player/model';
 import { ActivatedRoute } from '@angular/router';
 import { GuildService } from 'src/app/guilds/guild.service';
 import { PlayerService } from 'src/app/player/player.service';
@@ -16,6 +16,8 @@ export class QueueComponent implements OnInit {
   tracks$?: Observable<Track[]>
   guildId?: string
   channelId?: string
+
+  currentTrackId$?: Observable<number | undefined>
 
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +38,13 @@ export class QueueComponent implements OnInit {
         this.playerService.switchChannel(channelId);
         this.tracks$ = this.queueService.getTracks(guildId);
       })
+
+    this.currentTrackId$ = this.playerService.getStatus()
+      .pipe(map(status => {
+        if(status?.state == PlayerState.STOPPED)
+          return;
+        return status?.currentTrackId
+      }))
   }
 
   removeTrack(track: Track) {

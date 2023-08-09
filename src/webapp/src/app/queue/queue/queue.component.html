@@ -1,6 +1,7 @@
 <div class="tracks">
   <app-track
-    *ngFor="let track of tracks$ | async"
+    *ngFor="let track of tracks$ | async; let trackIndex = index"
+    [ngClass]="trackIndex == (currentTrackId$ | async) ? 'playing' : ''"
     [track]="track"
     (onRemove)="removeTrack($event)"
     (onPlay)="play($event)"
