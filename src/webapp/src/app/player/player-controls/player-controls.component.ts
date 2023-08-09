@@ -1,42 +1,46 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { PlayerStatus } from '../model';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { PlayerState, PlayerStatus } from '../model';
 import { PlayerService } from '../player.service';
-import { map } from 'rxjs';
 
 @Component({
   selector: 'app-player-controls',
   templateUrl: './player-controls.component.html',
   styleUrls: ['./player-controls.component.scss']
 })
-export class PlayerControlsComponent {
+export class PlayerControlsComponent implements OnInit {
   
-  status: PlayerStatus = PlayerStatus.STOPPED
-  PlayerStatus = PlayerStatus
-
-  channelId?: string;
+  status: PlayerStatus | null = {
+    channel: null,
+    currentTrack: null,
+    guild: null,
+    shuffle: false,
+    state: PlayerState.STOPPED
+  }
+  PlayerState = PlayerState
 
   constructor(
-    private route: ActivatedRoute,
     private playerService: PlayerService
   ) {}
 
+  ngOnInit(): void {
+    this.playerService.getStatus().subscribe(status => this.status = status)
+  }
+
   play() {
-    if(this.status == PlayerStatus.STOPPED)
+    if(this.status == null)
+      return;
+
+    if(this.status.state == PlayerState.STOPPED)
       this.playerService.play()
-    else if(this.status == PlayerStatus.PAUSED)
+    else if(this.status.state == PlayerState.PAUSED)
       this.playerService.resume()
-    
-    this.status = PlayerStatus.PLAYING
   }
 
   pause() {
-    this.status = PlayerStatus.PAUSED
     this.playerService.pause()
   }
 
   stop() {
-    this.status = PlayerStatus.STOPPED
     this.playerService.stop()
   }
 
@@ -46,6 +50,16 @@ export class PlayerControlsComponent {
 
   next() {
     this.playerService.next()
+  }
+
+  toggleShuffle() {
+    if(this.status == null)
+      return;
+    
+    if(this.status.shuffle)
+      this.playerService.shuffleOff();
+    else
+      this.playerService.shuffleOn();
   }
 
 }

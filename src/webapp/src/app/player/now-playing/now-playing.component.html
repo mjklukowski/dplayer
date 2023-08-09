@@ -1,0 +1,14 @@
+<ng-container *ngIf="track && channel && guild">
+  <div class="thumbnail">
+    <img [src]="track.thumbnail" />
+  </div>
+  <div class="data">
+    <p class="title">{{ track.title }}</p>
+    <div class="server-data">
+      <p class="channel">Channel:</p>
+      <p>{{ channel.name }}</p>
+      <p class="server">Server:</p>
+      <p>{{ guild.name }}</p>
+    </div>
+  </div>
+</ng-container>

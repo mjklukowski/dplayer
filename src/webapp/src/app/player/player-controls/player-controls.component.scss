@@ -1,11 +1,13 @@
 @import "/src/colors.scss";
 
 :host {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 33.33%);
+    justify-items: center;
     align-items: center;
     background-color: #222222;
     padding: 1rem 0;
+    height: 5rem;
 }
 
 button {
@@ -28,14 +30,30 @@ button {
 
     svg > path {
         fill: $textColor;
-
-        &:hover {
-            fill: $textColorHover;
-        }
     }
 
 
     &:hover {
         border-color: $textColorHover;
+
+        svg > path {
+            fill: $textColorHover;
+        }
+    }
+
+    &.on {
+        border-color: $accentColor; 
+
+        svg > path {
+            fill: $accentColor;
+        }
+
+        &:hover {
+            border-color: lighten($accentColor, 10%);
+
+            svg > path {
+                fill: lighten($accentColor, 10%);
+            }
+        }
     }
 }

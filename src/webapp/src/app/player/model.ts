@@ -1,4 +1,14 @@
-export enum PlayerStatus {
+import { Channel, Guild } from "../guilds/model"
+
+export interface PlayerStatus {
+    guild: Guild | null
+    state: PlayerState
+    channel: Channel | null
+    currentTrack: Track | null
+    shuffle: boolean
+}
+
+export enum PlayerState {
     PLAYING = "PLAYING",
     STOPPED = "STOPPED",
     PAUSED = "PAUSED"
