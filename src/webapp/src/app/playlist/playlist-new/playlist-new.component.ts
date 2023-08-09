@@ -22,17 +22,22 @@ export class PlaylistNewComponent {
       return;
     }
 
-    if(event.key == "Enter") {
-      if(!this.validate(this.name))
-        return;
-      this.onSave.emit(this.name);
-      this.disableEditMode();
-    }
+    if(event.key == "Enter")
+      this.save()
+  }
+  
+  save() {
+    if(!this.validate(this.name))
+      return;
+    this.onSave.emit(this.name);
+    this.disableEditMode();
   }
 
   onBlur() {
     if(this.name.trim().length == 0)
       this.disableEditMode();
+    else
+      this.save()
   }
 
   validate(name: string): boolean {

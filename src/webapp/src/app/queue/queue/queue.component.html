@@ -1,12 +1,15 @@
-<div class="tracks">
-  <app-track
-    *ngFor="let track of tracks$ | async; let trackIndex = index"
-    [ngClass]="trackIndex == (currentTrackId$ | async) ? 'playing' : ''"
-    [track]="track"
-    (onRemove)="removeTrack($event)"
-    (onPlay)="play($event)"
-  ></app-track>
+<div class="tracks" *ngIf="tracks$ | async as tracks">
+  <ng-container *ngIf="tracks.length > 0; else emptyQueue">
+    <app-track
+      *ngFor="let track of tracks; let trackIndex = index"
+      [ngClass]="trackIndex == (currentTrackId$ | async) ? 'playing' : ''"
+      [track]="track"
+      (onRemove)="removeTrack($event)"
+      (onPlay)="play($event)"
+    ></app-track>
+  </ng-container>
 </div>
+<ng-template #emptyQueue>Queue is empty</ng-template>
 <div class="buttons">
   <button class="button" (click)="addDialog.show()">Add song</button>
 </div>
