@@ -3,6 +3,8 @@
     [playlists]="playlists"
     [activePlaylist]="activePlaylist"
     (onChange)="selectPlaylist($event)"
+    (onAdd)="addPlaylist($event)"
+    (onRemove)="removePlaylist($event)"
   ></app-playlist-list>
   <app-playlist-tracks
     [tracks]="activePlaylist?.trackList"
