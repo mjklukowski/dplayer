@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Track } from 'src/app/player/model';
 
 @Component({
@@ -8,4 +8,14 @@ import { Track } from 'src/app/player/model';
 })
 export class PlaylistTracksComponent {
   @Input() tracks?: Track[] = []
+  @Output() onAdd = new EventEmitter<string>()
+  @Output() onRemove = new EventEmitter<Track>()
+
+  addTrack(trackUrl: string) {
+    this.onAdd.emit(trackUrl)
+  }
+
+  removeTrack(track: Track) {
+    this.onRemove.emit(track);
+  }
 }

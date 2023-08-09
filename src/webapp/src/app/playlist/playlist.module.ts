@@ -7,6 +7,7 @@ import { PlaylistTracksComponent } from './playlist-tracks/playlist-tracks.compo
 import { CommonsModule } from '../commons/commons.module';
 import { PlaylistNewComponent } from './playlist-new/playlist-new.component';
 import { FormsModule } from '@angular/forms';
+import { SearchModule } from '../search/search.module';
 
 
 
@@ -21,7 +22,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     PlaylistRoutingModule,
     CommonsModule,
-    FormsModule
+    FormsModule,
+    SearchModule
   ]
 })
 export class PlaylistModule { }

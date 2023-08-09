@@ -1,6 +1,16 @@
-<ng-container *ngIf="tracks?.length ?? 0 > 0; else emptyPlaylist">
-  <app-track *ngFor="let track of tracks" [track]="track"></app-track>
-</ng-container>
-<ng-template #emptyPlaylist>
-  <div *ngIf="tracks" class="empty">Playlist is empty</div>
-</ng-template>
+<div>
+  <ng-container *ngIf="tracks?.length ?? 0 > 0; else emptyPlaylist">
+    <app-track
+      *ngFor="let track of tracks"
+      [track]="track"
+      (onRemove)="removeTrack(track)"
+    ></app-track>
+  </ng-container>
+  <ng-template #emptyPlaylist>
+    <div *ngIf="tracks" class="empty">Playlist is empty</div>
+  </ng-template>
+</div>
+<div class="buttons" *ngIf="tracks">
+  <button class="button" (click)="addDialog.show()">Add song</button>
+</div>
+<app-add-track #addDialog (onAdd)="addTrack($event)"></app-add-track>

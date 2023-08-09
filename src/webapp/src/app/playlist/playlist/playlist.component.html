@@ -8,5 +8,7 @@
   ></app-playlist-list>
   <app-playlist-tracks
     [tracks]="activePlaylist?.trackList"
+    (onAdd)="addTrack($event)"
+    (onRemove)="removeTrack($event)"
   ></app-playlist-tracks>
 </ng-container>

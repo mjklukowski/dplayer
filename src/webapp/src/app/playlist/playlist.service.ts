@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, map, switchMap, take, tap } from 'rxjs';
 import { Guild } from '../guilds/model';
 import { Playlist } from './model';
 import { environment } from 'src/environments/environment';
+import { Track } from '../player/model';
 
 @Injectable({
   providedIn: 'root'
@@ -49,5 +50,46 @@ export class PlaylistService {
       })
     )
     .subscribe()
+  }
+
+  addTrack(guildId: string | undefined, playlist: Playlist, trackUrl: string) {
+    this.playlists$.pipe(
+      take(1),
+      map(playlists => {
+        const index = playlists.indexOf(playlist)
+        return {playlists, index}
+      }),
+      switchMap(({playlists, index}) => 
+        this.http.post<Track[]>(`${environment.apiBaseURL}/guild/${guildId}/playlist/${index}`, { url: trackUrl })
+          .pipe(
+            map(tracks => [...playlist.trackList, ...tracks]),
+            tap(tracks => playlists[index].trackList = tracks),
+            map(() => playlists)
+          )
+      )
+    )
+    .subscribe(playlists => this.playlists$.next(playlists));
+  }
+
+  removeTrack(guildId: string | undefined, playlist: Playlist, track: Track) {
+    this.playlists$.pipe(
+      take(1),
+      map(playlists => ({
+        playlists,
+        playlistIndex: playlists.indexOf(playlist),
+        trackIndex: playlist.trackList.indexOf(track)
+      })),
+      switchMap(({playlists, playlistIndex, trackIndex}) => 
+        this.http.delete(`${environment.apiBaseURL}/guild/${guildId}/playlist/${playlistIndex}/${trackIndex}`)
+          .pipe(
+            map(() => {
+              playlist.trackList.splice(trackIndex, 1)
+              playlists[playlistIndex].trackList = playlist.trackList
+              return playlists
+            })
+          )
+      )
+    )
+    .subscribe(playlists => this.playlists$.next(playlists));
   }
 }

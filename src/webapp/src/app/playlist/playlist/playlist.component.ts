@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { PlaylistService } from '../playlist.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, map } from 'rxjs';
-import { GuildService } from 'src/app/guilds/guild.service';
 import { Playlist } from '../model';
+import { Track } from 'src/app/player/model';
 
 @Component({
   selector: 'app-playlist',
@@ -43,6 +43,16 @@ export class PlaylistComponent implements OnInit {
 
   removePlaylist(playlist: Playlist) {
     this.playlistService.removePlaylist(this.guildId, playlist);
+  }
+
+  addTrack(trackUrl: string) {
+    if(this.activePlaylist)
+      this.playlistService.addTrack(this.guildId, this.activePlaylist, trackUrl);
+  }
+
+  removeTrack(track: Track) {
+    if(this.activePlaylist)
+      this.playlistService.removeTrack(this.guildId, this.activePlaylist, track);
   }
 
 }
