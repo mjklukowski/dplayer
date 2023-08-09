@@ -1,7 +1,19 @@
 <div class="tabs">
-  <div class="tab" routerLink="queue">Queue</div>
-  <div class="tab" routerLink="playlists">Playlists</div>
+  <div
+    class="tab"
+    [ngClass]="activeTab == 'queue' ? 'active' : ''"
+    routerLink="queue"
+  >
+    Queue
+  </div>
+  <div
+    class="tab"
+    [ngClass]="activeTab == 'playlist' ? 'active' : ''"
+    routerLink="playlists"
+  >
+    Playlists
+  </div>
 </div>
 <div class="guild-outlet">
-  <router-outlet></router-outlet>
+  <router-outlet (activate)="onActivate($event)"></router-outlet>
 </div>

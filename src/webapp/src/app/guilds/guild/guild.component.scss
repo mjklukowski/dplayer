@@ -7,6 +7,11 @@
     &.active {
         background-color: lighten($guildPanelBackgroundColor, 10%);
         border-radius: 4px;
+
+        .guild .name {
+            font-weight: bold;
+            color: $textColorHover;
+        }
     }
 }
 
@@ -34,9 +39,14 @@
 }
 
 .channel {
-    margin: 0.75rem 0;
+    margin-top: 0.75rem;
     padding-left: 1rem;
     cursor: pointer;
+
+    &.active {
+        font-weight: bold;
+        color: $textColorHover;
+    }
 }
 
 .guild, .channel {

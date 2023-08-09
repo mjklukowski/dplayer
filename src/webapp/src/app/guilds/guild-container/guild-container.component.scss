@@ -5,6 +5,7 @@
     flex-direction: column;
     height: 100%;
     padding: 2rem;
+    gap: 1rem;
 }
 
 .guild-outlet {
@@ -36,5 +37,9 @@
         }
 
         padding: 0.25rem 1rem;
+
+        &.active, &:hover {
+            background-color: $separatorColor;
+        }
     }
 }

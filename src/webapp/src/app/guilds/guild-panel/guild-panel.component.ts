@@ -12,10 +12,13 @@ export class GuildPanelComponent implements OnInit {
 
   guilds$?: Observable<Guild[]>
 
+  activeGuildId$?: Observable<string | null>
+
   constructor(private guildService: GuildService) {}
 
   ngOnInit(): void {
     this.guilds$ = this.guildService.getGuilds();
+    this.activeGuildId$ = this.guildService.getActiveGuildId();
   }
 
 }

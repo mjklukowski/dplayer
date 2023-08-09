@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PlayerState, PlayerStatus } from '../model';
 import { PlayerService } from '../player.service';
+import { Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'app-player-controls',
   templateUrl: './player-controls.component.html',
   styleUrls: ['./player-controls.component.scss']
 })
-export class PlayerControlsComponent implements OnInit {
+export class PlayerControlsComponent implements OnInit, OnDestroy {
   
   status: PlayerStatus | null = {
     channel: null,
@@ -18,12 +19,22 @@ export class PlayerControlsComponent implements OnInit {
   }
   PlayerState = PlayerState
 
+  private pollingSub!: Subscription;
+
   constructor(
     private playerService: PlayerService
   ) {}
 
   ngOnInit(): void {
     this.playerService.getStatus().subscribe(status => this.status = status)
+    this.pollingSub = timer(0, 10000).subscribe(() => {
+      if(this.status != null && this.status.channel != null)
+        this.playerService.updateStatus(this.status.channel.snowflake)
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.pollingSub.unsubscribe();
   }
 
   play() {
