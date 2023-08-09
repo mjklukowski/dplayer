@@ -10,6 +10,7 @@ export class PlaylistTracksComponent {
   @Input() tracks?: Track[] = []
   @Output() onAdd = new EventEmitter<string>()
   @Output() onRemove = new EventEmitter<Track>()
+  @Output() onPlay = new EventEmitter<Track>()
 
   addTrack(trackUrl: string) {
     this.onAdd.emit(trackUrl)
@@ -17,5 +18,9 @@ export class PlaylistTracksComponent {
 
   removeTrack(track: Track) {
     this.onRemove.emit(track);
+  }
+
+  playTrack(track: Track) {
+    this.onPlay.emit(track)
   }
 }

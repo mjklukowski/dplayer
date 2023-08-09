@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, map } from 'rxjs';
 import { Playlist } from '../model';
 import { Track } from 'src/app/player/model';
+import { QueueService } from 'src/app/queue/queue.service';
+import { PlayerService } from 'src/app/player/player.service';
 
 @Component({
   selector: 'app-playlist',
@@ -19,7 +21,9 @@ export class PlaylistComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private playlistService: PlaylistService
+    private playlistService: PlaylistService,
+    private queueService: QueueService,
+    private playerService: PlayerService
   ) {}
 
   ngOnInit(): void {
@@ -53,6 +57,17 @@ export class PlaylistComponent implements OnInit {
   removeTrack(track: Track) {
     if(this.activePlaylist)
       this.playlistService.removeTrack(this.guildId, this.activePlaylist, track);
+  }
+
+  playTrack(track: Track) {
+    if(this.activePlaylist == null)
+      return;
+    
+    this.queueService.clear(this.guildId);
+    this.playlistService.addToQueue(this.guildId, this.activePlaylist);
+    const trackIndex = this.activePlaylist.trackList.indexOf(track)
+
+    this.playerService.play(trackIndex);
   }
 
 }

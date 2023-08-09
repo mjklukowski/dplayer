@@ -22,6 +22,10 @@ public class QueueService {
         getQueue(guild).remove(trackIndex);
     }
 
+    public void clear(Guild guild) {
+        getQueue(guild).clear();
+    }
+
     public PlaybackQueue getQueue(Guild guild) {
         if(!queues.containsKey(guild))
             queues.put(guild, new PlaybackQueue(new QueueLinear()));

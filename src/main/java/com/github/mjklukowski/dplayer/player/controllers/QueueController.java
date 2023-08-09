@@ -50,4 +50,11 @@ public class QueueController {
         Guild guild = discordService.getGuildById(Snowflake.of(guildId)).orElseThrow();
         return ResponseEntity.ok(queueService.getQueue(guild).getTrackList());
     }
+
+    @DeleteMapping("/guild/{guildId}/queue/clear")
+    public ResponseEntity<Void> clearQueue(@PathVariable String guildId) {
+        Guild guild = discordService.getGuildById(Snowflake.of(guildId)).orElseThrow();
+        queueService.clear(guild);
+        return ResponseEntity.noContent().build();
+    }
 }

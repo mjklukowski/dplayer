@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { QueueService } from '../queue.service';
-import { Observable, map, switchMap } from 'rxjs';
+import { Observable, map, switchMap, take } from 'rxjs';
 import { Track } from 'src/app/player/model';
 import { ActivatedRoute } from '@angular/router';
 import { GuildService } from 'src/app/guilds/guild.service';
@@ -48,6 +48,7 @@ export class QueueComponent implements OnInit {
 
   play(track: Track) {
     this.tracks$?.pipe(
+      take(1),
       map(tracks => tracks.findIndex(t => t == track))
     ).subscribe(index => this.playerService.play(index))
   }

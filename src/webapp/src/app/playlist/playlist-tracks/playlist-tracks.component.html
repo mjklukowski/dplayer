@@ -3,7 +3,8 @@
     <app-track
       *ngFor="let track of tracks"
       [track]="track"
-      (onRemove)="removeTrack(track)"
+      (onRemove)="removeTrack($event)"
+      (onPlay)="playTrack($event)"
     ></app-track>
   </ng-container>
   <ng-template #emptyPlaylist>
