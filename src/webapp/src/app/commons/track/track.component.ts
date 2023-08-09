@@ -9,9 +9,14 @@ import { Track } from 'src/app/player/model';
 export class TrackComponent {
   @Input() track!: Track;
   @Output() onRemove = new EventEmitter<Track>()
+  @Output() onPlay = new EventEmitter<Track>()
 
   remove() {
     this.onRemove.emit(this.track);
+  }
+
+  play() {
+    this.onPlay.emit(this.track);
   }
 
 }

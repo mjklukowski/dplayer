@@ -3,6 +3,7 @@
     *ngFor="let track of tracks$ | async"
     [track]="track"
     (onRemove)="removeTrack($event)"
+    (onPlay)="play($event)"
   ></app-track>
 </div>
 <div class="buttons">

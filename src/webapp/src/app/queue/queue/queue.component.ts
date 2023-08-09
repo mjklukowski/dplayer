@@ -4,6 +4,7 @@ import { Observable, map, switchMap } from 'rxjs';
 import { Track } from 'src/app/player/model';
 import { ActivatedRoute } from '@angular/router';
 import { GuildService } from 'src/app/guilds/guild.service';
+import { PlayerService } from 'src/app/player/player.service';
 
 @Component({
   selector: 'app-queue',
@@ -14,19 +15,25 @@ export class QueueComponent implements OnInit {
 
   tracks$?: Observable<Track[]>
   guildId?: string
+  channelId?: string
 
   constructor(
     private route: ActivatedRoute,
-    private queueService: QueueService
+    private queueService: QueueService,
+    private playerService: PlayerService
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap
       .pipe(
-        map(params => params.get("guildId")!)
+        map(params => ({
+          guildId: params.get("guildId")!,
+          channelId: params.get("channelId")!
+        }))
       )
-      .subscribe(guildId => {
+      .subscribe(({guildId, channelId}) => {
         this.guildId = guildId;
+        this.playerService.switchChannel(channelId);
         this.tracks$ = this.queueService.getTracks(guildId);
       })
   }
@@ -37,6 +44,12 @@ export class QueueComponent implements OnInit {
 
   addTrack(trackUrl: string) {
     this.queueService.addTrack(this.guildId, trackUrl);
+  }
+
+  play(track: Track) {
+    this.tracks$?.pipe(
+      map(tracks => tracks.findIndex(t => t == track))
+    ).subscribe(index => this.playerService.play(index))
   }
 
 }

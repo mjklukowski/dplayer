@@ -4,7 +4,7 @@ import { GuildContainerComponent } from './guild-container/guild-container.compo
 
 const routes: Routes = [
   {
-    path: ":guildId",
+    path: ":guildId/:channelId",
     component: GuildContainerComponent,
     children: [
       {

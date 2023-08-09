@@ -31,7 +31,7 @@
   <div
     class="channel"
     *ngFor="let channel of channels$ | async"
-    [routerLink]="[guild.snowflake, 'queue']"
+    [routerLink]="[guild.snowflake, channel.snowflake, 'queue']"
   >
     {{ channel.name }}
   </div>
