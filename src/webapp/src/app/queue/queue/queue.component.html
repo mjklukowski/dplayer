@@ -5,3 +5,7 @@
     (onRemove)="removeTrack($event)"
   ></app-track>
 </div>
+<div class="buttons">
+  <button class="button" (click)="addDialog.show()">Add song</button>
+</div>
+<app-add-track #addDialog (onAdd)="addTrack($event)"></app-add-track>

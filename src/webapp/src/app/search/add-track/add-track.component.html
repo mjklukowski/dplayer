@@ -1,0 +1,17 @@
+<dialog #dialog (click)="close()">
+  <div class="container" (click)="$event.stopPropagation()">
+    <input
+      type="text"
+      placeholder="Paste here URL to YouTube video or type anything to search"
+      [(ngModel)]="query"
+      (change)="search()"
+    />
+    <div class="results">
+      <app-search-result
+        *ngFor="let result of results$ | async"
+        [result]="result"
+        (onAdd)="add($event)"
+      ></app-search-result>
+    </div>
+  </div>
+</dialog>

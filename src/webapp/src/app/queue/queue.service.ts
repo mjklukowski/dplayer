@@ -20,6 +20,15 @@ export class QueueService {
     return this.tracks$.asObservable()
   }
 
+  addTrack(guildId: string | undefined, trackUrl: string) {
+    this.tracks$.pipe(
+      take(1),
+      switchMap(tracks => this.http.post<Track[]>(`${environment.apiBaseURL}/guild/${guildId}/queue`, { url: trackUrl })
+        .pipe(map(track => [...tracks, ...track])))
+      )
+      .subscribe(tracks => this.tracks$.next(tracks))
+  }
+
   removeTrack(guildId: string | undefined, track: Track) {
     this.tracks$.pipe(
       take(1),

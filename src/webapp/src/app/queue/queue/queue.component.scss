@@ -1,5 +1,22 @@
+@import "/src/colors.scss";
+
 :host {
-    display: block;
+    display: flex;
     height: 100%;
+    flex-direction: column;
+}
+
+.tracks{
+    flex: 1;
     overflow-y: auto;
 }
+
+.buttons {
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 0 {
+        right: 1rem;
+        top: 1rem;
+    };
+}
+

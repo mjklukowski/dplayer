@@ -17,8 +17,7 @@ export class QueueComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private queueService: QueueService,
-    private guildService: GuildService
+    private queueService: QueueService
   ) {}
 
   ngOnInit(): void {
@@ -34,6 +33,10 @@ export class QueueComponent implements OnInit {
 
   removeTrack(track: Track) {
     this.queueService.removeTrack(this.guildId, track);
+  }
+
+  addTrack(trackUrl: string) {
+    this.queueService.addTrack(this.guildId, trackUrl);
   }
 
 }
