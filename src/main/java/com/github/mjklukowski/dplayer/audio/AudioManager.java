@@ -2,6 +2,7 @@ package com.github.mjklukowski.dplayer.audio;
 
 import com.github.mjklukowski.dplayer.discord.DiscordService;
 import com.github.mjklukowski.dplayer.player.domain.Track;
+import com.github.mjklukowski.dplayer.player.dto.PlayerState;
 import com.github.mjklukowski.dplayer.player.services.PlaybackService;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
@@ -20,9 +21,10 @@ public class AudioManager extends AudioEventAdapter {
     private final AudioPlayerManager playerManager;
     private final AudioPlayer player;
     private final AudioProvider provider;
-    private final VoiceChannel channel;
+    private VoiceChannel channel;
     private final DiscordService discordService;
     private final PlaybackService playbackService;
+    private PlayerState state;
 
     public AudioManager(VoiceChannel channel, DiscordService discordService, PlaybackService playbackService) {
         this.channel = channel;
@@ -31,6 +33,7 @@ public class AudioManager extends AudioEventAdapter {
         playerManager = new DefaultAudioPlayerManager();
         player = createAudioPlayer(playerManager);
         provider = new LavaPlayerAudioProvider(player);
+        state = PlayerState.STOPPED;
     }
 
     private AudioPlayer createAudioPlayer(AudioPlayerManager playerManager) {
@@ -47,6 +50,7 @@ public class AudioManager extends AudioEventAdapter {
     }
 
     public void playTrack(Track track) {
+        state = PlayerState.PLAYING;
         AudioLoader loader = AudioLoader.builder(playerManager)
                 .onLoad(audioTrack -> {
                     player.stopTrack();
@@ -62,14 +66,17 @@ public class AudioManager extends AudioEventAdapter {
 
     public void resumeTrack() {
         player.setPaused(false);
+        state = PlayerState.PLAYING;
     }
 
     public void pauseTrack() {
         player.setPaused(true);
+        state = PlayerState.PAUSED;
     }
 
     public void stopTrack() {
         player.stopTrack();
+        state = PlayerState.STOPPED;
     }
 
     @Override
@@ -81,5 +88,17 @@ public class AudioManager extends AudioEventAdapter {
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         if(endReason == AudioTrackEndReason.FINISHED)
             playbackService.next(channel);
+    }
+
+    public VoiceChannel getChannel() {
+        return channel;
+    }
+
+    public void setChannel(VoiceChannel channel) {
+        this.channel = channel;
+    }
+
+    public PlayerState getState() {
+        return state;
     }
 }

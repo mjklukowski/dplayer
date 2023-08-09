@@ -39,6 +39,10 @@ public class PlaybackQueue extends TrackList {
         super.remove(trackIndex);
     }
 
+    public QueueStrategy getQueueStrategy() {
+        return queueStrategy;
+    }
+
     public void setQueueStrategy(QueueStrategy queueStrategy) {
         this.queueStrategy = queueStrategy;
     }

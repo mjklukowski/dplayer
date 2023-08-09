@@ -1,5 +1,6 @@
 package com.github.mjklukowski.dplayer.player.services;
 
+import com.github.mjklukowski.dplayer.player.dto.PlayerStatus;
 import discord4j.core.object.entity.channel.VoiceChannel;
 
 public interface PlaybackService {
@@ -11,4 +12,5 @@ public interface PlaybackService {
     void prev(VoiceChannel channel);
     void stop(VoiceChannel channel);
     void shuffle(VoiceChannel channel, boolean enabled);
+    PlayerStatus getStatus(VoiceChannel channel);
 }

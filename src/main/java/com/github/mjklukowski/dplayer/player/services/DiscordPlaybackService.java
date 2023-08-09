@@ -2,10 +2,13 @@ package com.github.mjklukowski.dplayer.player.services;
 
 import com.github.mjklukowski.dplayer.audio.AudioManager;
 import com.github.mjklukowski.dplayer.discord.DiscordService;
+import com.github.mjklukowski.dplayer.discord.dto.Channel;
 import com.github.mjklukowski.dplayer.player.domain.Track;
 import com.github.mjklukowski.dplayer.player.domain.queue.PlaybackQueue;
 import com.github.mjklukowski.dplayer.player.domain.queue.QueueLinear;
 import com.github.mjklukowski.dplayer.player.domain.queue.QueueShuffle;
+import com.github.mjklukowski.dplayer.player.dto.PlayerState;
+import com.github.mjklukowski.dplayer.player.dto.PlayerStatus;
 import discord4j.core.object.entity.Guild;
 import discord4j.core.object.entity.channel.VoiceChannel;
 import discord4j.core.spec.VoiceChannelJoinSpec;
@@ -109,8 +112,43 @@ public class DiscordPlaybackService implements PlaybackService {
                 .map(guild -> {
                     if(!managers.containsKey(guild))
                         managers.put(guild, new AudioManager(channel, discordService, this));
-                    return managers.get(guild);
+                    AudioManager manager = managers.get(guild);
+                    manager.setChannel(channel);
+                    return manager;
                 });
+    }
+
+    @Override
+    public PlayerStatus getStatus(VoiceChannel channel) {
+        Guild discordGuild = channel.getGuild().block();
+        com.github.mjklukowski.dplayer.discord.dto.Guild guild = null;
+        if(discordGuild != null)
+            guild = new com.github.mjklukowski.dplayer.discord.dto.Guild(discordGuild);
+
+        AudioManager manager = managers.get(discordGuild);
+
+        PlayerState state = PlayerState.STOPPED;
+        Channel currentChannel = null;
+        if(manager != null) {
+            state = manager.getState();
+
+            if(state != PlayerState.STOPPED)
+                currentChannel = new Channel(manager.getChannel());
+        }
+
+        PlaybackQueue queue = queueService.getQueue(discordGuild);
+
+        Track currentTrack = queue.current().orElse(null);
+        if(state == PlayerState.STOPPED)
+            currentTrack = null;
+
+        return new PlayerStatus(
+                guild,
+                state,
+                currentChannel,
+                currentTrack,
+                queue.getQueueStrategy() instanceof QueueShuffle
+        );
     }
 
 }
