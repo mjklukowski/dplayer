@@ -63,6 +63,8 @@ public class QueueLinear implements QueueStrategy {
     public void onRemove(List<Track> trackList, int removedTrackIndex) {
         if(removedTrackIndex <= currentTrack)
             currentTrack--;
+        if(currentTrack < 0)
+            currentTrack = 0;
     }
 
 }

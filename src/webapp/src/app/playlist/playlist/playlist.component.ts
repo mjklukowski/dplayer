@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PlaylistService } from '../playlist.service';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, map } from 'rxjs';
+import { Observable, concat, map, switchMap, tap } from 'rxjs';
 import { Playlist } from '../model';
 import { Track } from 'src/app/player/model';
 import { QueueService } from 'src/app/queue/queue.service';
@@ -63,11 +63,16 @@ export class PlaylistComponent implements OnInit {
     if(this.activePlaylist == null)
       return;
     
-    this.queueService.clear(this.guildId);
-    this.playlistService.addToQueue(this.guildId, this.activePlaylist);
-    const trackIndex = this.activePlaylist.trackList.indexOf(track)
+    
+    concat(
+      this.queueService.clear(this.guildId),
+      this.playlistService.addToQueue(this.guildId, this.activePlaylist)
+        .pipe(
+          map(() => this.activePlaylist?.trackList.indexOf(track)),
+          tap(trackIndex => this.playerService.play(trackIndex))
+        ),
+    ).subscribe();
 
-    this.playerService.play(trackIndex);
   }
 
 }

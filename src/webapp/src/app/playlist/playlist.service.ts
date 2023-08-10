@@ -94,11 +94,10 @@ export class PlaylistService {
   }
 
   addToQueue(guildId: string | undefined, playlist: Playlist) {
-    this.playlists$.pipe(
+    return this.playlists$.pipe(
       take(1),
       map(playlists => playlists.indexOf(playlist)),
       switchMap(index => this.http.post<Track[]>(`${environment.apiBaseURL}/guild/${guildId}/playlist/${index}/addToQueue`, null))
     )
-    .subscribe()
   }
 }

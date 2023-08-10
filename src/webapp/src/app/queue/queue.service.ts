@@ -50,6 +50,5 @@ export class QueueService {
   clear(guildId: string | undefined) {
     return this.http.delete(`${environment.apiBaseURL}/guild/${guildId}/queue/clear`)
           .pipe(tap(() => this.tracks$.next([])))
-          .subscribe()
   }
 }
