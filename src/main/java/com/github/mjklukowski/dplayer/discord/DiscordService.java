@@ -7,6 +7,7 @@ import discord4j.core.object.entity.channel.TextChannel;
 import discord4j.core.object.entity.channel.VoiceChannel;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,15 +30,20 @@ public class DiscordService {
 
     public List<VoiceChannel> getChannels(Snowflake guildId) {
         return client.getGuildChannels(guildId)
-                .filter(channel -> channel instanceof VoiceChannel)
-                .map(channel -> (VoiceChannel) channel)
+                .filter(VoiceChannel.class::isInstance)
+                .map(VoiceChannel.class::cast)
+                .sort(Comparator.comparingInt(DiscordService::getVoiceChannelPosition))
                 .collectList().block();
+    }
+
+    private static Integer getVoiceChannelPosition(VoiceChannel voiceChannel) {
+        return Optional.ofNullable(voiceChannel.getPosition().block()).orElse(Integer.MAX_VALUE);
     }
 
     public Optional<VoiceChannel> getChannelById(Snowflake channelId) {
         return Optional.ofNullable(client.getChannelById(channelId)
-                .filter(channel -> channel instanceof VoiceChannel)
-                .map(channel -> (VoiceChannel) channel)
+                .filter(VoiceChannel.class::isInstance)
+                .map(VoiceChannel.class::cast)
                 .block());
     }
 
