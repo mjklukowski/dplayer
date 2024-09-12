@@ -13,6 +13,7 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import com.sedmelluq.discord.lavaplayer.track.playback.NonAllocatingAudioFrameBuffer;
+import dev.lavalink.youtube.YoutubeAudioSourceManager;
 import discord4j.core.object.entity.channel.VoiceChannel;
 import discord4j.voice.AudioProvider;
 
@@ -37,9 +38,12 @@ public class AudioManager extends AudioEventAdapter {
     }
 
     private AudioPlayer createAudioPlayer(AudioPlayerManager playerManager) {
+        YoutubeAudioSourceManager ytSourceManager = new YoutubeAudioSourceManager();
+        playerManager.registerSourceManager(ytSourceManager);
         playerManager.getConfiguration()
                 .setFrameBufferFactory(NonAllocatingAudioFrameBuffer::new);
-        AudioSourceManagers.registerRemoteSources(playerManager);
+
+        AudioSourceManagers.registerRemoteSources(playerManager, com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager.class);
         AudioPlayer player = playerManager.createPlayer();
         player.addListener(this);
         return player;
